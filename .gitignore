@@ -1,0 +1,9 @@
+# Build artifacts / packaged extension (regenerate with `zip -r serp-snapshot.zip serp-snapshot`)
+serp-snapshot.zip
+*.zip
+
+# Node / test scratch (tests run from the session scratchpad, not the repo)
+node_modules/
+
+# OS cruft
+.DS_Store
