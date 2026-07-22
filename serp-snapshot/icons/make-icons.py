@@ -2,9 +2,11 @@
 """
 make-icons.py — generate SERP Snapshot's PNG icons with zero dependencies.
 
-Draws a Google-blue rounded square with a white "spreadsheet" grid glyph (rows +
-columns), evoking "SERP to spreadsheet". Pure stdlib (zlib + struct), so it runs
-anywhere Python 3 does. Regenerate after editing colors/geometry:
+Design: a bold "SS" monogram in white on a near-black (#111827) rounded square,
+with a single emerald (#10b981) accent underline. Rendered with 4x supersampling
+and averaged down, so edges are clean even at 16px. Pure stdlib (zlib + struct).
+
+Regenerate after editing colors/geometry:
 
     python3 icons/make-icons.py
 
@@ -15,104 +17,135 @@ import os
 import struct
 import zlib
 
-BG = (26, 115, 232, 255)      # Google blue #1a73e8
-GRID = (255, 255, 255, 255)   # white grid lines
-CELL = (255, 255, 255, 60)    # faint cell fill
-TRANSPARENT = (0, 0, 0, 0)
+BG = (17, 24, 39)        # near-black slate  #111827
+INK = (255, 255, 255)    # monogram          white
+ACCENT = (16, 185, 129)  # accent underline  #10b981 emerald
+
+SS = 4  # supersampling factor
 
 
-def rounded(x, y, w, h, r):
-    """Is pixel (x,y) inside a w*h rounded rect with corner radius r?"""
+def in_rounded(x, y, w, h, r):
+    """Point-in-rounded-rectangle test."""
     if x < 0 or y < 0 or x >= w or y >= h:
         return False
-    # Corner circles
-    for cx, cy in ((r, r), (w - 1 - r, r), (r, h - 1 - r), (w - 1 - r, h - 1 - r)):
-        in_corner_zone = (
-            (x < r and y < r and cx == r and cy == r)
-            or (x > w - 1 - r and y < r and cx == w - 1 - r and cy == r)
-            or (x < r and y > h - 1 - r and cx == r and cy == h - 1 - r)
-            or (x > w - 1 - r and y > h - 1 - r and cx == w - 1 - r and cy == h - 1 - r)
-        )
-        if in_corner_zone:
+    for cx, cy in ((r, r), (w - r, r), (r, h - r), (w - r, h - r)):
+        left = cx == r
+        top = cy == r
+        if (left and x < r or (not left) and x > w - r) and (
+            top and y < r or (not top) and y > h - r
+        ):
             if (x - cx) ** 2 + (y - cy) ** 2 > r * r:
                 return False
     return True
 
 
+def in_rect(x, y, rx, ry, rw, rh):
+    return rx <= x < rx + rw and ry <= y < ry + rh
+
+
+def s_glyph(x, y, bx, by, bw, bh, th):
+    """
+    Is (x,y) inside an 'S' drawn in box (bx,by,bw,bh) with stroke thickness th?
+    Built from five bars (7-segment style S): top, upper-left, middle,
+    lower-right, bottom.
+    """
+    half = (bh - th) / 2.0
+    # top bar
+    if in_rect(x, y, bx, by, bw, th):
+        return True
+    # middle bar
+    if in_rect(x, y, bx, by + half, bw, th):
+        return True
+    # bottom bar
+    if in_rect(x, y, bx, by + bh - th, bw, th):
+        return True
+    # upper-left vertical (top -> middle)
+    if in_rect(x, y, bx, by, th, half + th):
+        return True
+    # lower-right vertical (middle -> bottom)
+    if in_rect(x, y, bx + bw - th, by + half, th, half + th):
+        return True
+    return False
+
+
+def sample(x, y, W):
+    """Return (r,g,b,a) for a supersample-space pixel at (x,y) on a WxW canvas."""
+    radius = W * 0.22
+    if not in_rounded(x, y, W, W, radius):
+        return (0, 0, 0, 0)
+
+    margin = W * 0.17
+    inner = W - 2 * margin
+    inner_x = margin
+    inner_y = margin
+
+    # Reserve the bottom strip for the accent underline.
+    letters_h = inner * 0.66
+    gap = inner * 0.10
+    letter_w = (inner - gap) / 2.0
+    th = max(SS, letter_w * 0.26)
+
+    ly = inner_y + inner * 0.02
+    l1x = inner_x
+    l2x = inner_x + letter_w + gap
+
+    if s_glyph(x, y, l1x, ly, letter_w, letters_h, th):
+        return INK + (255,)
+    if s_glyph(x, y, l2x, ly, letter_w, letters_h, th):
+        return INK + (255,)
+
+    # Accent underline: centered bar below the monogram.
+    acc_w = inner * 0.78
+    acc_h = max(SS, th * 0.85)
+    acc_x = inner_x + (inner - acc_w) / 2.0
+    acc_y = ly + letters_h + inner * 0.10
+    if in_rect(x, y, acc_x, acc_y, acc_w, acc_h):
+        return ACCENT + (255,)
+
+    return BG + (255,)
+
+
 def make(size):
-    px = [[TRANSPARENT for _ in range(size)] for _ in range(size)]
-    radius = max(2, size // 6)
+    W = size * SS
+    # Supersample buffer.
+    buf = [[sample(x, y, W) for x in range(W)] for y in range(W)]
 
-    # Background rounded square.
-    for y in range(size):
-        for x in range(size):
-            if rounded(x, y, size, size, radius):
-                px[y][x] = BG
-
-    # Grid geometry: an inset table with 3 rows x 3 cols.
-    margin = max(2, size // 5)
-    inner = size - 2 * margin
-    if inner < 6:
-        inner = size - 2 * max(1, size // 8)
-        margin = (size - inner) // 2
-    line = max(1, size // 32)
-    rows = cols = 3
-    step = inner / rows
-
-    def in_table(x, y):
-        return margin <= x < margin + inner and margin <= y < margin + inner
-
-    # Faint cell fill for the table body.
-    for y in range(size):
-        for x in range(size):
-            if in_table(x, y) and px[y][x] == BG:
-                px[y][x] = blend(BG, CELL)
-
-    # Grid lines (horizontal + vertical, including outer border).
-    for i in range(rows + 1):
-        gy = int(round(margin + i * step))
-        for x in range(margin, margin + inner + 1):
-            for t in range(line):
-                yy = min(size - 1, gy + t)
-                if in_table(x, yy) or yy == int(round(margin + inner)):
-                    if 0 <= x < size and 0 <= yy < size and px[yy][x] != TRANSPARENT:
-                        px[yy][x] = GRID
-    for j in range(cols + 1):
-        gx = int(round(margin + j * step))
-        for y in range(margin, margin + inner + 1):
-            for t in range(line):
-                xx = min(size - 1, gx + t)
-                if in_table(xx, y) or xx == int(round(margin + inner)):
-                    if 0 <= xx < size and 0 <= y < size and px[y][xx] != TRANSPARENT:
-                        px[y][xx] = GRID
-
-    return px
-
-
-def blend(base, over):
-    """Alpha-composite `over` onto opaque `base`."""
-    a = over[3] / 255.0
-    return (
-        int(base[0] * (1 - a) + over[0] * a),
-        int(base[1] * (1 - a) + over[1] * a),
-        int(base[2] * (1 - a) + over[2] * a),
-        255,
-    )
+    out = [[(0, 0, 0, 0) for _ in range(size)] for _ in range(size)]
+    n = SS * SS
+    for oy in range(size):
+        for ox in range(size):
+            ar = ag = ab = aa = 0
+            for sy in range(SS):
+                for sx in range(SS):
+                    r, g, b, a = buf[oy * SS + sy][ox * SS + sx]
+                    ar += r * a
+                    ag += g * a
+                    ab += b * a
+                    aa += a
+            if aa == 0:
+                out[oy][ox] = (0, 0, 0, 0)
+            else:
+                out[oy][ox] = (
+                    int(ar / aa),
+                    int(ag / aa),
+                    int(ab / aa),
+                    int(aa / n),
+                )
+    return out
 
 
 def write_png(path, px):
     size = len(px)
     raw = bytearray()
     for y in range(size):
-        raw.append(0)  # filter type 0 (None) per scanline
+        raw.append(0)  # filter type 0 (None)
         for x in range(size):
             r, g, b, a = px[y][x]
             raw += bytes((r, g, b, a))
 
     def chunk(tag, data):
         c = struct.pack(">I", len(data)) + tag + data
-        crc = zlib.crc32(tag + data) & 0xFFFFFFFF
-        return c + struct.pack(">I", crc)
+        return c + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
     sig = b"\x89PNG\r\n\x1a\n"
     ihdr = struct.pack(">IIBBBBB", size, size, 8, 6, 0, 0, 0)  # 8-bit RGBA

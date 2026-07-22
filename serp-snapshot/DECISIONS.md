@@ -25,11 +25,14 @@ Google changes its markup and selectors need repair.
 
 ## Defaults chosen where the spec was open
 
-1. **Icons are generated as flat-color PNGs** with a simple "SS" glyph, created
-   at build time via a tiny generator (`icons/make-icons` is documented in the
-   README). They are placeholders — replace with brand art before Web Store
-   submission. Chosen because the spec required the four sizes to exist and load
-   cleanly; art direction was unspecified.
+1. **Icons are a bold "SS" monogram** in white on a near-black (`#111827`)
+   rounded square with a single emerald (`#10b981`) accent underline, generated
+   at build time via `icons/make-icons.py` (4x supersampled for clean edges, pure
+   stdlib). They are placeholders — replace with brand art before Web Store
+   submission. The brand palette (near-black slate + emerald accent) is mirrored
+   across the popup UI (`popup.css`) and the on-page badge status dots
+   (`badge.js`): primary/ink `#111827`, accent `#10b981`, with dark-mode variants
+   (`#e5e7eb` inverted button, `#34d399` accent).
 2. **PAA auto-expansion count = first 4** (as specified). Wait after each click
    = **350ms** (`PAA_EXPAND_WAIT_MS`), chosen as a balance between reliability
    (Google lazy-loads answer content) and staying responsive. Tunable constant.

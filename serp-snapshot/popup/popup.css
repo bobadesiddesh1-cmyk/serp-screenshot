@@ -2,38 +2,44 @@
 
 :root {
   --bg: #ffffff;
-  --fg: #202124;
-  --muted: #5f6368;
-  --border: rgba(0, 0, 0, 0.12);
-  --card: #f8f9fa;
-  --primary: #1a73e8;
+  --fg: #111827;
+  --muted: #6b7280;
+  --border: rgba(17, 24, 39, 0.12);
+  --card: #f7f8fa;
+  --primary: #111827; /* near-black slate */
   --primary-fg: #ffffff;
-  --primary-hover: #1765cc;
-  --ok: #1e8e3e;
-  --err: #d93025;
-  --chip-bg: #eef3fe;
-  --chip-fg: #1a4fbf;
+  --primary-hover: #1f2937;
+  --accent: #10b981; /* emerald highlight */
+  --ok: #059669;
+  --err: #dc2626;
+  --chip-bg: #ecfdf5;
+  --chip-fg: #047857;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #202124;
-    --fg: #e8eaed;
+    --bg: #16181c;
+    --fg: #e5e7eb;
     --muted: #9aa0a6;
     --border: rgba(255, 255, 255, 0.14);
-    --card: #292a2d;
-    --primary: #8ab4f8;
-    --primary-fg: #202124;
-    --primary-hover: #aecbfa;
-    --ok: #81c995;
-    --err: #f28b82;
-    --chip-bg: #303134;
-    --chip-fg: #8ab4f8;
+    --card: #202329;
+    --primary: #e5e7eb; /* inverted button on dark */
+    --primary-fg: #111827;
+    --primary-hover: #f3f4f6;
+    --accent: #34d399;
+    --ok: #34d399;
+    --err: #f87171;
+    --chip-bg: #0f2e24;
+    --chip-fg: #34d399;
   }
 }
 
 * {
   box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
 }
 
 html,
@@ -68,11 +74,14 @@ body {
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 6px;
-  background: var(--primary);
-  color: var(--primary-fg);
+  border-radius: 7px;
+  /* Fixed brand colors so the chip matches the near-black icon in both themes. */
+  background: #111827;
+  color: #ffffff;
+  border-bottom: 2px solid var(--accent);
   font-weight: 700;
   font-size: 11px;
+  letter-spacing: 0.5px;
 }
 
 .brand-name {
@@ -101,8 +110,8 @@ body {
 }
 
 .tab.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  color: var(--fg);
+  border-bottom-color: var(--accent);
   font-weight: 600;
 }
 
