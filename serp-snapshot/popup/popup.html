@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SERP Snapshot</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark">SS</span>
+        <span class="brand-name">SERP Snapshot</span>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="capture" role="tab">Capture</button>
+        <button class="tab" data-tab="history" role="tab">History</button>
+        <button class="tab" data-tab="settings" role="tab">Settings</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============ CAPTURE TAB ============ -->
+      <section class="panel active" data-panel="capture">
+        <p class="hint" id="page-hint">Open a Google search results page, then capture it.</p>
+
+        <button id="capture-btn" class="btn btn-primary btn-block">Capture this SERP</button>
+
+        <div id="preview" class="preview hidden" aria-live="polite">
+          <div class="preview-counts">
+            <span class="chip"><b id="c-organic">0</b> organic</span>
+            <span class="chip"><b id="c-paa">0</b> PAA</span>
+            <span class="chip"><b id="c-related">0</b> related</span>
+            <span class="chip" id="c-aio-chip">AI Overview: <b id="c-aio">—</b></span>
+          </div>
+          <div class="preview-stat" id="preview-stat"></div>
+        </div>
+
+        <div class="format-row">
+          <label class="format-label">Format</label>
+          <div class="segmented" role="radiogroup" aria-label="Export format">
+            <button class="seg" data-format="csv" role="radio">CSV file</button>
+            <button class="seg" data-format="clipboard" role="radio">Clipboard</button>
+          </div>
+        </div>
+
+        <label class="check-inline">
+          <input type="checkbox" id="opt-all-sections" />
+          Include all sections (PAA, related, AI Overview)
+        </label>
+
+        <div class="actions">
+          <button id="export-btn" class="btn btn-block" disabled>Export</button>
+          <button id="copy-organic-btn" class="btn btn-ghost btn-block" disabled>
+            Copy organic only
+          </button>
+        </div>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+
+      <!-- ============ HISTORY TAB ============ -->
+      <section class="panel" data-panel="history">
+        <div class="history-head">
+          <h2>Last 20 captures</h2>
+          <button id="clear-history-btn" class="btn btn-ghost btn-sm">Clear all</button>
+        </div>
+        <ul id="history-list" class="history-list"></ul>
+        <p id="history-empty" class="hint">No captures yet.</p>
+        <div id="history-detail" class="history-detail hidden"></div>
+      </section>
+
+      <!-- ============ SETTINGS TAB ============ -->
+      <section class="panel" data-panel="settings">
+        <div class="setting">
+          <label for="set-format">Default export format</label>
+          <select id="set-format">
+            <option value="csv">CSV file</option>
+            <option value="clipboard">Clipboard (tab-separated)</option>
+          </select>
+        </div>
+
+        <label class="check-block">
+          <input type="checkbox" id="set-all-sections" />
+          <span>Export all sections as separate CSV files (default on)</span>
+        </label>
+
+        <label class="check-block">
+          <input type="checkbox" id="set-sitelinks" />
+          <span>Include sitelinks as sub-rows in the organic CSV</span>
+        </label>
+
+        <label class="check-block">
+          <input type="checkbox" id="set-rich" />
+          <span>Include rich-result / carousel items as a separate section</span>
+        </label>
+
+        <p id="settings-saved" class="status"></p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      100% local · zero network calls · <code>storage</code> permission only
+    </footer>
+
+    <!-- Shared modules (attach to window.SERPSnapshot) -->
+    <script src="../shared/urlunwrap.js"></script>
+    <script src="../shared/csv.js"></script>
+    <script src="../shared/storage.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
