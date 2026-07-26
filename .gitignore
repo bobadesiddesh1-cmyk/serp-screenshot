@@ -8,5 +8,9 @@ submission/
 # Node / test scratch (tests run from the session scratchpad, not the repo)
 node_modules/
 
+# Python bytecode cache (created when the icon generator is imported)
+__pycache__/
+*.pyc
+
 # OS cruft
 .DS_Store
