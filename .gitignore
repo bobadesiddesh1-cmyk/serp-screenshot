@@ -2,6 +2,9 @@
 serp-snapshot.zip
 *.zip
 
+# Generated Web Store submission bundle (graphics + zip; regenerate any time)
+submission/
+
 # Node / test scratch (tests run from the session scratchpad, not the repo)
 node_modules/
 

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "SERP Snapshot — One-Click SERP to Spreadsheet",
   "version": "1.0.0",
-  "description": "Export Google SERP data — organic results, People Also Ask, related searches, and AI Overview citations — straight to CSV or clipboard. 100% local, zero network calls.",
+  "description": "Export Google SERP organic results, People Also Ask, related searches & AI Overview citations to CSV or clipboard. 100% local.",
   "permissions": ["storage"],
   "action": {
     "default_title": "SERP Snapshot",
