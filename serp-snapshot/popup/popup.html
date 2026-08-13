@@ -102,7 +102,9 @@
             <span class="about-mark">SS</span>
             <div>
               <div class="about-title">SERP Snapshot</div>
-              <div class="about-ver">v<span id="about-version">1.0.0</span></div>
+              <!-- Filled from manifest.json at runtime — single source of truth,
+                   so the displayed version can never drift from the package. -->
+              <div class="about-ver" id="about-version"></div>
             </div>
           </div>
           <p class="about-copy">

@@ -153,15 +153,34 @@ permission-justification wording tweak — the text above is written to satisfy 
 
 ---
 
-## 6) After it's live — updating
+## 6) Updating (and the version rule)
 
-1. Edit code, bump `manifest.json` `version`.
+**Every package you upload must have a HIGHER `version` than the last one you
+uploaded** — re-uploading the same version is rejected. This applies even while
+the item is still a draft, so bump the version any time you re-upload after a
+change.
+
+1. Edit code, bump `manifest.json` `version` (e.g. `1.0.1` → `1.0.2`).
 2. Re-create the store zip (manifest at root):
    ```
    cd serp-snapshot && zip -r ../serp-snapshot-store.zip . \
      -x '*.md' -x 'icons/make-icons.py' && cd ..
    ```
-3. Dashboard → your item → **Package → Upload new package** → **Submit for review**.
+3. Confirm the zip carries the version you expect:
+   ```
+   unzip -p ../serp-snapshot-store.zip manifest.json | grep '"version"'
+   ```
+4. Dashboard → your item → **Package → Upload new package** → **Submit for review**.
+
+> The version shown in the popup's About card is read from `manifest.json` at
+> runtime via `chrome.runtime.getManifest()`, so it updates itself — there is no
+> second place to edit.
+
+### Version history
+| Version | What changed |
+|---|---|
+| 1.0.0 | Initial build. |
+| 1.0.1 | Build with Siddesh branding (popup footer byline, Settings About card, badge tooltip); store description brand line. |
 
 ---
 

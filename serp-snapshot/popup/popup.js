@@ -624,7 +624,7 @@
     try {
       var el2 = document.getElementById('about-version');
       if (el2 && chrome.runtime && chrome.runtime.getManifest) {
-        el2.textContent = chrome.runtime.getManifest().version;
+        el2.textContent = 'v' + chrome.runtime.getManifest().version;
       }
     } catch (e) {
       /* keep the static fallback */
