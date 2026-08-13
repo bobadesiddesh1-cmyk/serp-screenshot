@@ -87,7 +87,10 @@
       badge.className = 'badge';
       badge.setAttribute('role', 'button');
       badge.setAttribute('tabindex', '0');
-      badge.title = 'SERP Snapshot — click to refresh the popup with this capture';
+      // Branding lives in the tooltip rather than on the badge face — the badge
+      // sits on someone else's SERP, so it stays as small as possible.
+      badge.title =
+        'SERP Snapshot by Build with Siddesh (buildwithsiddesh.com) — click to refresh the popup with this capture';
 
       var dot = document.createElement('span');
       dot.className = 'dot';

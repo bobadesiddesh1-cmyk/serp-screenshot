@@ -253,3 +253,8 @@ serp-snapshot/
 ```
 
 See `DECISIONS.md` for the rationale behind every default.
+
+---
+
+Built by **[Build with Siddesh](https://www.buildwithsiddesh.com/)** — practical
+tools for people who do the SEO work.

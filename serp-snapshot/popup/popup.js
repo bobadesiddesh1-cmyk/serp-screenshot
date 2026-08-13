@@ -616,10 +616,26 @@
       });
   }
 
+  /**
+   * Show the running version in the About card, read from the manifest so it
+   * never drifts from the packaged version.
+   */
+  function showVersion() {
+    try {
+      var el2 = document.getElementById('about-version');
+      if (el2 && chrome.runtime && chrome.runtime.getManifest) {
+        el2.textContent = chrome.runtime.getManifest().version;
+      }
+    } catch (e) {
+      /* keep the static fallback */
+    }
+  }
+
   function boot() {
     initTabs();
     wireCapture();
     wireSettings();
+    showVersion();
     (STORE ? STORE.getSettings() : Promise.resolve(null)).then(function (s) {
       if (s) applySettingsToUi(s);
       initActivePage();

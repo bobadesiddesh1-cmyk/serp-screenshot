@@ -385,13 +385,119 @@ main {
   color: var(--fg);
 }
 
+/* About card (Settings tab) */
+.about {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.about-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.about-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #111827;
+  color: #fff;
+  border-bottom: 3px solid var(--accent);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  flex: 0 0 auto;
+}
+
+.about-title {
+  font-weight: 700;
+}
+
+.about-ver {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.about-copy {
+  margin: 10px 0 12px;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: 12px;
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 7px 12px;
+  border-radius: 8px;
+}
+
+.about-link:hover {
+  background: var(--accent);
+  color: #06281d;
+}
+
 /* Footer */
 .app-footer {
-  padding: 10px 14px;
+  padding: 9px 14px 10px;
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 11px;
   text-align: center;
+}
+
+.byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 7px;
+}
+
+.byline:hover {
+  background: var(--card);
+}
+
+.byline b {
+  font-weight: 700;
+}
+
+.byline-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  background: #111827;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.byline-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.footer-privacy {
+  margin-top: 5px;
 }
 
 .app-footer code {

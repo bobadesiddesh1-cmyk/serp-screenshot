@@ -62,10 +62,23 @@ Rank tracking, competitor research, and client reporting — without the manual 
 
 PRIVACY BY DESIGN
 100% local. Zero network requests. Zero analytics. The only permission is "storage", used to remember your settings and history on your own machine. The extension runs only on Google search pages and nowhere else.
+
+—
+Built by Build with Siddesh — practical tools for people who do the SEO work.
+More at https://www.buildwithsiddesh.com/
 ```
 
-**Category:** `Productivity`
-**Language:** `English (United States)`
+> Category note: Google's current taxonomy has no "Productivity" option — use
+> **Tools** (the closest alternative is Workflow & Planning).
+
+**Category:** `Tools`
+**Language:** `English`
+
+**Additional fields**
+- Official URL: leave `None` (needs a Search Console-verified domain).
+- Homepage URL: `https://www.buildwithsiddesh.com/`
+- Support URL: `https://github.com/bobadesiddesh1-cmyk/serp-screenshot/issues`
+- Mature content: off.
 
 **Graphic assets** (all provided, exact sizes required by the store):
 | Asset | File | Size |
