@@ -64,7 +64,7 @@ PRIVACY BY DESIGN
 100% local. Zero network requests. Zero analytics. The only permission is "storage", used to remember your settings and history on your own machine. The extension runs only on Google search pages and nowhere else.
 
 —
-Built by Build with Siddesh — practical tools for people who do the SEO work.
+Built by BuildWithSiddesh — practical tools for people who do the SEO work.
 More at https://www.buildwithsiddesh.com/
 ```
 
@@ -83,15 +83,22 @@ More at https://www.buildwithsiddesh.com/
 **Graphic assets** (all provided, exact sizes required by the store):
 | Asset | File | Size |
 |---|---|---|
-| Store icon | (taken from manifest) `icon128.png` | 128×128 |
+| Store icon | `store-icon-128.png` | 128×128 |
 | Screenshot 1 | `screenshot-1-hero.png` | 1280×800 |
 | Screenshot 2 | `screenshot-2-aio-column.png` | 1280×800 |
-| Screenshot 3 | `screenshot-3-privacy.png` | 1280×800 |
+| Screenshot 3 | `screenshot-3-badge.png` | 1280×800 |
+| Screenshot 4 | `screenshot-4-exports.png` | 1280×800 |
+| Screenshot 5 | `screenshot-5-privacy.png` | 1280×800 |
 | Small promo tile | `promo-tile-440x280.png` | 440×280 |
+| Marquee promo tile | `promo-marquee-1400x560.png` | 1400×560 |
 
-> At least one screenshot is required; upload all three. The small promo tile is
-> optional but recommended (used in store placements). A marquee (1400×560) is
-> optional and not included.
+> Five screenshots is the store maximum; upload them in the order above (the
+> first is the one users see first). Screenshots and both promo tiles are 24-bit
+> RGB with **no alpha**, as the store requires. The store icon keeps
+> transparency and uses a 96×96 mark centered in the 128×128 canvas, per
+> Google's icon guidance.
+>
+> Every screenshot and tile carries the **BuildWithSiddesh** byline.
 
 ---
 
@@ -180,7 +187,8 @@ change.
 | Version | What changed |
 |---|---|
 | 1.0.0 | Initial build. |
-| 1.0.1 | Build with Siddesh branding (popup footer byline, Settings About card, badge tooltip); store description brand line. |
+| 1.0.1 | BuildWithSiddesh branding (popup footer byline, Settings About card, badge tooltip); store description brand line. |
+| 1.0.2 | Brand name corrected to the site's own styling ("BuildWithSiddesh", one word) across popup, badge tooltip and docs. |
 
 ---
 

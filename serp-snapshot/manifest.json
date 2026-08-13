@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SERP Snapshot — One-Click SERP to Spreadsheet",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Export Google SERP organic results, People Also Ask, related searches & AI Overview citations to CSV or clipboard. 100% local.",
   "permissions": ["storage"],
   "action": {
